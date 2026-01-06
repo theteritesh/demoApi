@@ -1,0 +1,15 @@
+meta {
+  name: /admin/getTampletePlaceholders/{trigger}
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/admin/getTampletePlaceholders/NEW_TASK
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

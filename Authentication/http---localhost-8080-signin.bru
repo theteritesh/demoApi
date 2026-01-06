@@ -1,0 +1,51 @@
+meta {
+  name: http://localhost:8080/signin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/signin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "username": "riteshQACloud@gmail.com",
+      "password": "1234"
+  
+  }
+  
+}
+
+script:post-response {
+  // 1. Parse the response body as JSON
+  var jsonData = res.getBody();
+  
+  // 2. Get the token from the JSON data
+  //    (IMPORTANT: Change 'token' to match your API's response key)
+  var token = jsonData.jwtToken; 
+  var roleResponce = jsonData.role;
+  var role ="";
+  if(role === "ROLE_ADMIN"){
+      role = "admin";
+  } else if (role === "ROLE_EMPLOYEE") {
+      role = "employee";
+  }
+  
+  
+  // 3. Set the token as an environment variable
+  bru.setEnvVar("bearerToken", token);
+  bru.setEnvVar("role", role);
+  
+  console.log(bru.getEnvVar("bearerToken"));
+  console.log(bru.getEnvVar("role"));
+  
+  // 4. (Optional) Log to the console to confirm
+  console.log("Bearer Token has been set!");
+}
+
+settings {
+  encodeUrl: true
+}
