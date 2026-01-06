@@ -24,28 +24,30 @@ script:post-response {
   var jsonData = res.getBody();
   
   // 2. Get the token from the JSON data
-  //    (IMPORTANT: Change 'token' to match your API's response key)
   var token = jsonData.jwtToken; 
-  var roleResponce = jsonData.role;
-  var role ="";
-  if(role === "ROLE_ADMIN"){
+  var roleResponce = jsonData.role; // e.g., "ROLE_ADMIN"
+  
+  // 3. Logic to map the role
+  var role = "";
+  
+  // FIX: We must check 'roleResponce' (the data from API), not 'role' (the empty variable)
+  if(roleResponce === "ROLE_ADMIN"){
       role = "admin";
-  } else if (role === "ROLE_EMPLOYEE") {
+  } else if (roleResponce === "ROLE_EMPLOYEE") {
       role = "employee";
   }
   
-  
-  // 3. Set the token as an environment variable
+  // 4. Set the environment variables
+  // This makes {{bearerToken}} and {{role}} available for the next request
   bru.setEnvVar("bearerToken", token);
   bru.setEnvVar("role", role);
   
-  console.log(bru.getEnvVar("bearerToken"));
-  console.log(bru.getEnvVar("role"));
-  
-  // 4. (Optional) Log to the console to confirm
-  console.log("Bearer Token has been set!");
+  // 5. Logs for debugging
+  console.log("Token set to: " + bru.getEnvVar("bearerToken"));
+  console.log("Role set to: " + bru.getEnvVar("role"));
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

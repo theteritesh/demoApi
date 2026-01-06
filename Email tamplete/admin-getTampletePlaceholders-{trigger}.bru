@@ -5,11 +5,16 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/admin/getTampletePlaceholders/NEW_TASK
+  url: {{baseUrl}}/{{role}}/getTampletePlaceholders/NEW_TASK
   body: none
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{bearerToken}}
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
